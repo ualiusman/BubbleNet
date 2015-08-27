@@ -1,0 +1,19 @@
+﻿@if (Request.IsAuthenticated)
+{
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Overview", "Index", "Home")</li>
+        <li>@Html.ActionLink("Projects", "Index", "Project")</li>
+        <li>@Html.ActionLink("Features", "Index", "Feature")</li>
+        <li>@Html.ActionLink("Team Poster", "Poster", "App")</li>
+        <li>@Html.ActionLink("Commmunication Status", "CommunicationStatus", "Communication")</li>
+        <li>@Html.ActionLink("Best Practices", "Index", "Practice")</li>
+        <li>@Html.ActionLink("Experiences", "Index", "Experience")</li>
+        <li>@Html.ActionLink("ROI", "ROI", "App")</li>
+    </ul>
+}
+else
+{
+     <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Overview", "Index", "Home")</li>
+    </ul>   
+}

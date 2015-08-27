@@ -1,0 +1,46 @@
+﻿@model IEnumerable<BubbleNet.Models.Communication>
+
+@{
+    ViewBag.Title = "Communication Status List";
+}
+
+<h2>Communication Status List</h2>
+
+<p>
+    @Html.ActionLink("Create New Communiation Status", "Create") | @Html.ActionLink("Communiation Status", "CommunicationStatus")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CommunicationFrom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CommunicationTo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Satus)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @BubbleNet.Models.AppCommon.GetUser(item.CommunicationFrom)
+            </td>
+            <td>
+                @BubbleNet.Models.AppCommon.GetUser(item.CommunicationTo)
+            </td>
+            <td>
+                @Html.CommunictionStatus(item.Satus)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.CommunicationId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.CommunicationId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.CommunicationId })
+            </td>
+        </tr>
+    }
+
+</table>

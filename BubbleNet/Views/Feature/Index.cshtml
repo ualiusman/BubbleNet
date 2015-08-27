@@ -1,0 +1,61 @@
+﻿@model IEnumerable<BubbleNet.Models.Feature>
+
+@{
+    ViewBag.Title = "Features List";
+}
+
+<h2>Features List</h2>
+
+<p>
+    @Html.ActionLink("Create New Feature", "Create") | @Html.ActionLink("Feature Distribution", "DistributeFeatures") | 
+    @Html.ActionLink("Features Distribution List", "FeaturesDistributionList")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Project.ProjectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Discription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Relationship)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FeatureUsers)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Project.ProjectName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Discription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Relationship)
+        </td>
+        <td>
+            @foreach (var user in item.FeatureUsers)
+            {
+                @BubbleNet.Models.AppCommon.GetUser(user.UserId) <br/>
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.FeatureId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.FeatureId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.FeatureId })
+        </td>
+    </tr>
+}
+
+</table>

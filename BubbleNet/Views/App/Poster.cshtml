@@ -1,0 +1,134 @@
+﻿@model IEnumerable<BubbleNet.Models.UserViewModel>
+
+@{
+    ViewBag.Title = "Poster";
+}
+
+<h2>Poster</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SkypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MobileNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Company)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Country)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OfficeHoursStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OfficeHoursEnd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailabiltyHours)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BusinessDomain)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TechnologyExpertise)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Religion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.From)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Language)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Interests)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WantToCollaborate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WantFromTeamMates)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SkypeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MobileNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Company)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Location)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Country)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OfficeHoursStart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OfficeHoursEnd)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailabiltyHours)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BusinessDomain)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TechnologyExpertise)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Religion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.From)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Language)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Interests)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WantToCollaborate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WantFromTeamMates)
+        </td>
+    </tr>
+}
+
+</table>

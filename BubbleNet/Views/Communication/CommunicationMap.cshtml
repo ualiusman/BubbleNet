@@ -1,0 +1,33 @@
+﻿@model IEnumerable<BubbleNet.Models.CommunicationMap>
+
+@{
+    ViewBag.Title = "Communication Map";
+}
+
+<h2>Communication Map</h2>
+<p>
+    @Html.ActionLink("Communication Status", "CommunicationStatus") | @Html.ActionLink("Collaborative Sites", "CollaborativeSites")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th>@Html.DisplayNameFor(model => model.Hours)</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Location)
+        </td>
+        <td>
+            @foreach (var h in item.Hours)
+            {
+                <span style="display:inline-block; width:32px; text-align:center;">@h</span>
+            }
+        </td>
+    </tr>
+}
+
+</table>

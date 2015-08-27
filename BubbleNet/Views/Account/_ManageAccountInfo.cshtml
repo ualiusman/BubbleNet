@@ -1,0 +1,170 @@
+﻿@model BubbleNet.Models.UserViewModel
+
+@using (Html.BeginForm("ManageUserInfo", "Account", FormMethod.Post, new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Profile Management</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.ValueFor(model => model.UserName)
+                @Html.ValidationMessageFor(model => model.UserName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FullName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.FullName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.FullName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Email)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SkypeName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.SkypeName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SkypeName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MobileNumber, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.MobileNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MobileNumber)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Company, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Company, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Company)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Location, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Location, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Location)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Country, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Country", (List<SelectListItem>)ViewBag.AllCountries, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Country)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OfficeHoursStart, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.OfficeHoursStart, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.OfficeHoursStart)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OfficeHoursEnd, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.OfficeHoursEnd, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.OfficeHoursEnd)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AvailabiltyHours, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.AvailabiltyHours, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AvailabiltyHours)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BusinessDomain, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.BusinessDomain, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BusinessDomain)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TechnologyExpertise, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.TechnologyExpertise, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TechnologyExpertise)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Religion, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Religion, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Religion)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.From, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.From, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.From)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Language, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Language, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Language)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Interests, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Interests, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Interests)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.WantToCollaborate, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.WantToCollaborate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.WantToCollaborate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.WantFromTeamMates, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.WantFromTeamMates, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.WantFromTeamMates)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
