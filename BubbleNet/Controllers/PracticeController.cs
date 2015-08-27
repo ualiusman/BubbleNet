@@ -10,6 +10,7 @@ using BubbleNet.Models;
 
 namespace BubbleNet.Controllers
 {
+    [Authorize]
     public class PracticeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
