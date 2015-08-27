@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 
 namespace BubbleNet.Controllers
 {
@@ -17,7 +18,7 @@ namespace BubbleNet.Controllers
             return View();
         }
 
-        public ActionResult Poster()
+        public ActionResult Poster(int? page)
         {
             var _db = new ApplicationDbContext();
 
@@ -50,7 +51,12 @@ namespace BubbleNet.Controllers
 
                userModel.Add(um);
             }
-            return View(userModel);
+
+
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            
+            return View(userModel.ToPagedList(pageNumber,pageSize));
         }
 	}
 }
