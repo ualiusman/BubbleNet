@@ -9,7 +9,7 @@
   @Html.ActionLink("Collaborative Sites", "CollaborativeSites") | @Html.ActionLink("Communication Map", "CommunicationMap") | @Html.ActionLink("Communiation Status List", "Index")
 </p>
 
-<table class="table">
+<table class="table table-bordered table-striped table-hover">
     <tr>
         <th>Distributed Team Members</th>
         @foreach (var ComTo in (List<string>)ViewBag.To)

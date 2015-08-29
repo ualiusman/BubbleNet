@@ -26,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.UserExperience, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.UserExperience, new { @class = "form-control", required="required" })
+                @Html.TextAreaFor(model => model.UserExperience, new { @class = "form-control", required="required", @style="height:100px;" })
                 @Html.ValidationMessageFor(model => model.UserExperience)
             </div>
         </div>
