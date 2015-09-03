@@ -28,6 +28,7 @@ namespace BubbleNet.Controllers
                 UserViewModel um = new UserViewModel();
                 um.Email = user.Email;
                 um.From = user.From;
+                um.ProfilePic = user.ProfilePic;
                 um.FullName = user.FullName;
                 var cntry = _db.Countries.Where(f => f.Code == user.Country).FirstOrDefault();
                if(cntry != null)

@@ -1,9 +1,9 @@
 ﻿@model BubbleNet.Models.UserViewModel
 
-@using (Html.BeginForm("ManageUserInfo", "Account", FormMethod.Post, new { role = "form" }))
+@using (Html.BeginForm("ManageUserInfo", "Account", FormMethod.Post, new { role = "form", enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Profile Management</h4>
         <hr />
@@ -16,7 +16,22 @@
                 @Html.ValidationMessageFor(model => model.UserName)
             </div>
         </div>
-
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProfilePic, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div style="margin:0 0 5px 0;">
+                    @if (!string.IsNullOrEmpty(Model.ProfilePic))
+                    {
+                        <img width="115" height="115" class="pImg img-responsive" src="@Url.Content("~/Images/"+ Model.ProfilePic)" alt="Image" />
+                    }
+                    else
+                    {
+                        <img width="115" height="115" class="pImg img-responsive" src="@Url.Content("~/Images/"+ @"blank.jpg")" alt="image" />
+                    }
+                </div>
+                <input type="file" name="ProfilePic" />
+            </div>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.FullName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -168,3 +183,27 @@
         </div>
     </div>
 }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+    $(document).ready(function () {
+        $('input[type="file"]').change(function (e) {
+
+            for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {
+
+                var file = e.originalEvent.srcElement.files[i];
+
+                var img = document.createElement("img");
+                img.width = img.height = 115;
+                var reader = new FileReader();
+                reader.onloadend = function () {
+                    img.src = reader.result;
+                }
+                reader.readAsDataURL(file);
+                $(".pImg").replaceWith(img);
+            }
+        });
+    });
+
+</script>

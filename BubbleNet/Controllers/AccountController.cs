@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using BubbleNet.Models;
 using System.Data.Entity;
+using System.IO;
 
 namespace BubbleNet.Controllers
 {
@@ -203,6 +204,20 @@ namespace BubbleNet.Controllers
                 {
                     var _db = new ApplicationDbContext();
                     var user = _db.Users.First(u => u.UserName == User.Identity.Name);
+                    
+                    HttpPostedFileBase file = Request.Files[0] as HttpPostedFileBase;
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        string guid = Guid.NewGuid().ToString();
+                        var fileName = Path.GetFileName(file.FileName);
+                        var fileExtension = Path.GetExtension(file.FileName);
+                        if ((fileExtension == ".jpeg") || (fileExtension == ".jpg") || (fileExtension == ".png"))
+                        {
+                            user.ProfilePic = guid + fileExtension;
+                            var path = Path.Combine(Server.MapPath(@"~/Images/"), guid + fileExtension);
+                            file.SaveAs(path);
+                        }
+                    }
                     user.FullName = model.FullName;
                     user.SkypeName = model.SkypeName;
                     user.TechnologyExpertise = model.TechnologyExpertise;

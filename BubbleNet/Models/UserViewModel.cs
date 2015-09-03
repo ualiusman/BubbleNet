@@ -12,6 +12,7 @@ namespace BubbleNet.Models
         public UserViewModel(ApplicationUser user)
         {
             UserName = user.UserName;
+            ProfilePic = user.ProfilePic;
             FullName = user.FullName;
             SkypeName = user.SkypeName;
             MobileNumber = user.MobileNumber;
@@ -32,6 +33,8 @@ namespace BubbleNet.Models
             Language = user.Language;
         }
 
+        [Display(Name = "Profile Image")]
+        public string ProfilePic { get; set; }
         [Display(Name = "User Name")]
         public string UserName { get; set; }
 
