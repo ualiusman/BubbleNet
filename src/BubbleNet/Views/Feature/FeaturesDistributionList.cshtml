@@ -1,0 +1,37 @@
+﻿@model IEnumerable<BubbleNet.Models.FeatureUser>
+@using BubbleNet.Models;
+@{
+    ViewBag.Title = "Features Distribution List";
+}
+
+<h2>Features Distribution List</h2>
+
+<p>
+    @Html.ActionLink("New Feature Distribution", "DistributeFeatures") | @Html.ActionLink("Features List", "Index")
+</p>
+<table class="table table-bordered table-striped table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Feature.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserId)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Feature.Name)
+        </td>
+        <td>
+            @AppCommon.GetUser(item.UserId)
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "DeleteDistribution", new { id = item.FeatureUserId }, new { @style = "color:red;" })
+        </td>
+    </tr>
+}
+
+</table>

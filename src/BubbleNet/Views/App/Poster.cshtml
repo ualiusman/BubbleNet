@@ -1,0 +1,206 @@
+﻿@model PagedList.IPagedList<BubbleNet.Models.UserViewModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Distributed Members";
+}
+
+<h2>Distributed Members</h2>
+<br />
+
+<table class="table table-bordered table-striped table-hover">
+    <tr>
+        <th>
+            Name
+        </th>
+        @foreach (var item in Model)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+        }
+    </tr>
+    <tr>
+        <th>
+            Picture
+        </th>
+        @foreach (var item in Model)
+        {
+            <td>
+                @if (!string.IsNullOrEmpty(item.ProfilePic))
+                {
+                    <img width="115" height="115" class="img-responsive" src="@Url.Content("~/Images/"+ item.ProfilePic)" alt="Image" />
+                }
+                else
+                {
+                    <img width="115" height="115" class="img-responsive" src="@Url.Content("~/Images/"+ @"blank.jpg")" alt="image" />
+                }
+            </td>
+        }
+    </tr>
+    <tr>
+        <th>
+            Company
+        </th>
+        @foreach (var item in Model)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.Company)
+            </td>
+        }
+    </tr>
+    <tr>
+        <th>
+            Location
+        </th>
+        @foreach (var item in Model)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+        }
+    </tr>
+    <tr>
+        <th>
+            Email
+        </th>
+        @foreach (var item in Model)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+        }
+    </tr>
+    <tr>
+        <th>
+            Mobile Number
+        </th>
+        @foreach (var item in Model)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.MobileNumber)
+            </td>
+        }
+    </tr>
+    <tr>
+        <th>
+            Office Hours
+        </th>
+        @foreach (var item in Model)
+        {
+            <td>
+                @if((item.OfficeHoursStart != 0) && (item.OfficeHoursEnd != 0))
+                {
+                    <span>From @item.OfficeHoursStart to @item.OfficeHoursEnd</span> 
+                }
+            </td>
+        }
+    </tr>
+
+    <tr>
+        <th>
+            Availabilty Hours
+        </th>
+        @foreach (var item in Model)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.AvailabiltyHours)
+            </td>
+        }
+    </tr>
+
+    <tr>
+        <th>
+            Bussinus Domain
+        </th>
+        @foreach (var item in Model)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.BusinessDomain)
+            </td>
+        }
+    </tr>
+    <tr>
+        <th>
+            Technology Experties
+        </th>
+        @foreach (var item in Model)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.TechnologyExpertise)
+            </td>
+        }
+    </tr>
+    <tr>
+        <th>
+            Religion
+        </th>
+        @foreach (var item in Model)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.Religion)
+            </td>
+        }
+    </tr>
+    <tr>
+        <th>
+            From
+        </th>
+        @foreach (var item in Model)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.From)
+            </td>
+        }
+    </tr>
+    <tr>
+        <th>
+            Language
+        </th>
+        @foreach (var item in Model)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.Language)
+            </td>
+        }
+    </tr>
+    <tr>
+        <th>
+            Interests
+        </th>
+        @foreach (var item in Model)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.Interests)
+            </td>
+        }
+    </tr>
+    <tr>
+        <th>
+            What do I bring to the collaboration
+        </th>
+        @foreach (var item in Model)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.WantToCollaborate)
+            </td>
+        }
+    </tr>
+    <tr>
+        <th>
+            What do I want from my teammates
+        </th>
+        @foreach (var item in Model)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.WantFromTeamMates)
+            </td>
+        }
+    </tr>
+</table>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Poster",
+    new { page }))

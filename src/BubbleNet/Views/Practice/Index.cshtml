@@ -1,0 +1,55 @@
+﻿@model IEnumerable<BubbleNet.Models.Practice>
+@using BubbleNet.Models;
+@{
+    ViewBag.Title = "Team Best Practices";
+}
+
+<h2>Team Best Practices</h2>
+
+<p>
+    @Html.ActionLink("Create New Best Practice", "Create") | @Html.ActionLink("Assign New Participant To Best Practice", "AssignParticipantToPractice")
+     | @Html.ActionLink("Team Best Practice Participants", "PracticeParticipantList")
+</p>
+<table class="table table-bordered table-striped table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Team)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PracticeUsers)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Team)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @foreach (var user in item.PracticeUsers)
+            {
+                @AppCommon.GetUser(user.UserId) <br />
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PracticeId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PracticeId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PracticeId })
+        </td>
+    </tr>
+}
+
+</table>

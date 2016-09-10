@@ -1,0 +1,37 @@
+﻿@model IEnumerable<BubbleNet.Models.PracticeUser>
+
+@{
+    ViewBag.Title = "Team Best Practice Participants";
+}
+
+<h2>Practice Participants</h2>
+
+<p>
+    @Html.ActionLink("Assign New Participant To Best Practice", "AssignParticipantToPractice") | @Html.ActionLink("Team Best Practices", "Index")
+</p>
+<table class="table table-bordered table-striped table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Practice.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserId)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Practice.Name)
+        </td>
+        <td>
+            @BubbleNet.Models.AppCommon.GetUser(item.UserId)
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "DeletePracticeParticipant", new { id = item.PracticeUserId }, new { @style="color:red;" })
+        </td>
+    </tr>
+}
+
+</table>
