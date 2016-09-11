@@ -6,19 +6,20 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using BubbleNet.Models;
+using BubbleNet.Core.Models;
+using BubbleNet.Core;
 
 namespace BubbleNet.Controllers
 {
     [Authorize]
     public class CommunicationController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IUnitOfWork db = new BubbleNet.Infrastructure.Persistence.UnitOfWork(new Infrastructure.Persistence.ApplicationDbContext());
 
         // GET: /Communication/
         public ActionResult Index()
         {
-            return View(db.Communications.ToList());
+            return View(db.Communications.GetAll());
         }
 
         // GET: /Communication/Details/5
@@ -28,7 +29,7 @@ namespace BubbleNet.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Communication communication = db.Communications.Find(id);
+            Communication communication = db.Communications.Get(id.Value);
             if (communication == null)
             {
                 return HttpNotFound();
@@ -39,7 +40,7 @@ namespace BubbleNet.Controllers
         // GET: /Communication/Create
         public ActionResult Create()
         {
-            ViewBag.AllUsrs = db.Users.ToList().Select(f => new SelectListItem() { Text = f.FullName, Value = f.UserID.ToString() }).ToList();
+            ViewBag.AllUsrs = db.Users.GetUserList().Select(f => new SelectListItem() { Text = f.Value, Value = f.Key }).ToList();
             ViewBag.Status = new List<SelectListItem>() { 
                                                           new SelectListItem(){ Text ="Good", Value="Good"},
                                                           new SelectListItem(){ Text="Medium", Value="Medium"},
@@ -59,15 +60,15 @@ namespace BubbleNet.Controllers
             {
                 if (communication.CommunicationFrom != communication.CommunicationTo)
                 {
-                    if (!(db.Communications.Where(f => f.CommunicationFrom == communication.CommunicationFrom && f.CommunicationTo == communication.CommunicationTo).Count() > 0))
+                    if (!(db.Communications.Get(communication.CommunicationFrom,communication.CommunicationTo).Count() > 0))
                     {
                         db.Communications.Add(communication);
-                        db.SaveChanges();
+                        db.Complete();
                         return RedirectToAction("Index");
                     }
                 }
             }
-            ViewBag.AllUsrs = db.Users.ToList().Select(f => new SelectListItem() { Text = f.FullName, Value = f.UserID.ToString() }).ToList();
+            ViewBag.AllUsrs = db.Users.GetUserList().Select(f => new SelectListItem() { Text = f.Value, Value = f.Key }).ToList();
             ViewBag.Status = new List<SelectListItem>() { 
                                                           new SelectListItem(){ Text ="Good", Value="Good"},
                                                           new SelectListItem(){ Text="Medium", Value="Medium"},
@@ -83,13 +84,18 @@ namespace BubbleNet.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Communication communication = db.Communications.Find(id);
+            Communication communication = db.Communications.Get(id.Value);
             if (communication == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.AllUsrsFrom = db.Users.ToList().Select(f => new SelectListItem() { Text = f.FullName, Value = f.UserID.ToString(), Selected = f.UserID == communication.CommunicationFrom }).ToList();
-            ViewBag.AllUsrsTo = db.Users.ToList().Select(f => new SelectListItem() { Text = f.FullName, Value = f.UserID.ToString(), Selected = f.UserID == communication.CommunicationTo }).ToList();
+            ViewBag.AllUsrsFrom = db.Users.GetUserList().Select(f => new SelectListItem() { Text = f.Value, Value = f.Key.ToString(), Selected = f.Key == communication.CommunicationFrom.ToString() }).ToList();
+            ViewBag.AllUsrsTo = db.Users.GetUserList().Select(f => new SelectListItem()
+            {
+                Text = f.Value,
+                Value = f.Key,
+                Selected = f.Key
+                == communication.CommunicationTo.ToString() }).ToList();
             ViewBag.Status = new List<SelectListItem>() { 
                                                           new SelectListItem(){ Text ="Good", Value="Good", Selected = "Good" == communication.Satus},
                                                           new SelectListItem(){ Text="Medium", Value="Medium", Selected = "Medium" == communication.Satus},
@@ -108,8 +114,15 @@ namespace BubbleNet.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(communication).State = EntityState.Modified;
-                db.SaveChanges();
+                var c = db.Communications.Get(communication.CommunicationId);
+                if(c != null)
+                {
+                    c.CommunicationFrom = communication.CommunicationFrom;
+                    c.CommunicationTo = communication.CommunicationTo;
+                    c.Satus = communication.Satus;
+                    db.Complete();
+
+                }
                 return RedirectToAction("Index");
             }
             return View(communication);
@@ -122,7 +135,7 @@ namespace BubbleNet.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Communication communication = db.Communications.Find(id);
+            Communication communication = db.Communications.Get(id.Value);
             if (communication == null)
             {
                 return HttpNotFound();
@@ -135,26 +148,26 @@ namespace BubbleNet.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Communication communication = db.Communications.Find(id);
+            Communication communication = db.Communications.Get(id);
             db.Communications.Remove(communication);
-            db.SaveChanges();
+            db.Complete();
             return RedirectToAction("Index");
         }
 
 
         public ActionResult CommunicationStatus()
         {
-            List<string> comTo = db.Users.ToList().Select( f => f.FullName ).ToList();
+            List<string> comTo = db.Users.GetUsersName();
             List<string> comFrom = comTo;
 
-            List<CommunicationStatus> communicationStatus = new List<Models.CommunicationStatus>();
-            foreach (var usr in db.Users.ToList())
+            List<CommunicationStatus> communicationStatus = new List<CommunicationStatus>();
+            foreach (var usr in db.Users.GetAll())
             {
                 CommunicationStatus cs = new CommunicationStatus();
                 cs.CommunicationFrom = usr.FullName;
-                foreach (var u in db.Users.ToList())
+                foreach (var u in db.Users.GetAll())
                 {
-                    Communication c = db.Communications.Where(f => f.CommunicationFrom == usr.UserID && f.CommunicationTo == u.UserID).FirstOrDefault();
+                    Communication c = db.Communications.Get(usr.UserID, u.UserID).FirstOrDefault();
                     if(c != null)
                     {
                         cs.Status.Add(c.Satus);
@@ -177,13 +190,13 @@ namespace BubbleNet.Controllers
         public ActionResult CollaborativeSites()
         {
             List<CollaborativeSite> sites = new List<CollaborativeSite>();
-            foreach (var user in db.Users.ToList())
+            foreach (var user in db.Users.GetAll())
             {
                 CollaborativeSite site = new CollaborativeSite();
                 site.Id = user.UserID;
                 site.Location = user.Location;
                 site.UserName = user.FullName;
-                var contry = db.Countries.Where(f => f.Code == user.Country).FirstOrDefault();
+                var contry = db.Countries.Get(user.Country);
                 if (contry != null)
                 {
                     site.Country = contry.Name;
@@ -198,12 +211,12 @@ namespace BubbleNet.Controllers
         public ActionResult CommunicationMap()
         {
             List<CommunicationMap> maps = new List<CommunicationMap>();
-            foreach (var user in db.Users.ToList())
+            foreach (var user in db.Users.GetAll())
             {
                 CommunicationMap map = new CommunicationMap();
                 map.Id = user.UserID;
                 map.Location = user.Location;
-                Country country = db.Countries.Where(f => f.Code == user.Country).FirstOrDefault();
+                Country country = db.Countries.Get(user.Country);
                 if (country != null)
                 {
                     float offset = country.UtcOffset;

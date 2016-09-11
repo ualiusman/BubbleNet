@@ -6,19 +6,21 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using BubbleNet.Models;
+using BubbleNet.Core.Models;
+using BubbleNet.Core;
 
 namespace BubbleNet.Controllers
 {
     [Authorize]
     public class ProjectController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IUnitOfWork db = new BubbleNet.Infrastructure.Persistence.UnitOfWork(new Infrastructure.Persistence.ApplicationDbContext());
 
         // GET: /Project/
         public ActionResult Index()
         {
-            return View(db.Projects.ToList());
+            //return View(db.Projects.ToList());
+            return View(db.Projects.GetAll());
         }
 
         // GET: /Project/Details/5
@@ -28,7 +30,7 @@ namespace BubbleNet.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
+            Project project = db.Projects.Get(id.Value);
             if (project == null)
             {
                 return HttpNotFound();
@@ -52,7 +54,7 @@ namespace BubbleNet.Controllers
             if (ModelState.IsValid)
             {
                 db.Projects.Add(project);
-                db.SaveChanges();
+                db.Complete();
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +68,7 @@ namespace BubbleNet.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
+            Project project = db.Projects.Get(id.Value);
             if (project == null)
             {
                 return HttpNotFound();
@@ -83,8 +85,13 @@ namespace BubbleNet.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(project).State = EntityState.Modified;
-                db.SaveChanges();
+               var p =  db.Projects.Get(project.ProjectId);
+                if(p !=null)
+                {
+                    p.ProjectName = project.ProjectName;
+                    p.Discription = project.Discription;
+                    db.Complete();
+                }
                 return RedirectToAction("Index");
             }
             return View(project);
@@ -97,7 +104,7 @@ namespace BubbleNet.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
+            Project project = db.Projects.Get(id.Value);
             if (project == null)
             {
                 return HttpNotFound();
@@ -110,9 +117,9 @@ namespace BubbleNet.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Project project = db.Projects.Find(id);
+            Project project = db.Projects.Get(id);
             db.Projects.Remove(project);
-            db.SaveChanges();
+            db.Complete();
             return RedirectToAction("Index");
         }
 

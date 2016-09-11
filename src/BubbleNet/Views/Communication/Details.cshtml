@@ -1,5 +1,5 @@
-﻿@model BubbleNet.Models.Communication
-@using BubbleNet.Models;
+﻿@model BubbleNet.Core.Models.Communication
+@using BubbleNet.Core.Models;
 @{
     ViewBag.Title = "Details";
 }
@@ -15,7 +15,7 @@
         </dt>
 
         <dd>
-            @AppCommon.GetUser(Model.CommunicationFrom)
+            @BubbleNet.Models.AppCommon.GetUser(Model.CommunicationFrom)
         </dd>
 
         <dt>
@@ -23,7 +23,7 @@
         </dt>
 
         <dd>
-            @AppCommon.GetUser(Model.CommunicationTo)
+            @BubbleNet.Models.AppCommon.GetUser(Model.CommunicationTo)
         </dd>
 
         <dt>

@@ -1,5 +1,5 @@
-﻿@model BubbleNet.Models.Feature
-@using BubbleNet.Models
+﻿@model BubbleNet.Core.Models.Feature
+@using BubbleNet.Core.Models
 @{
     ViewBag.Title = "Details";
 }
@@ -47,7 +47,7 @@
         <dd>
            @foreach (var user in Model.FeatureUsers)
            {
-               @AppCommon.GetUser(user.UserId) <br/>
+               @BubbleNet.Models.AppCommon.GetUser(user.UserId) <br/>
            }
         </dd>
     </dl>

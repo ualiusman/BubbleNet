@@ -1,5 +1,5 @@
-﻿@model BubbleNet.Models.Practice
-@using BubbleNet.Models;
+﻿@model BubbleNet.Core.Models.Practice
+@using BubbleNet.Core.Models;
 @{
     ViewBag.Title = "Details";
 }
@@ -40,7 +40,7 @@
         <dd>
             @foreach (var user in Model.PracticeUsers)
             {
-                @AppCommon.GetUser(user.UserId)<br/>
+                @BubbleNet.Models.AppCommon.GetUser(user.UserId)<br/>
             }
         </dd>
 

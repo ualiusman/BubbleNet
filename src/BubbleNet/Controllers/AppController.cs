@@ -20,17 +20,17 @@ namespace BubbleNet.Controllers
 
         public ActionResult Poster(int? page)
         {
-            var _db = new ApplicationDbContext();
+            var _db = new BubbleNet.Infrastructure.Persistence.UnitOfWork(new Infrastructure.Persistence.ApplicationDbContext());
 
             List<UserViewModel> userModel = new List<UserViewModel>();
-            foreach (var user in _db.Users)
+            foreach (var user in _db.Users.GetAll())
             {
                 UserViewModel um = new UserViewModel();
                 um.Email = user.Email;
                 um.From = user.From;
                 um.ProfilePic = user.ProfilePic;
                 um.FullName = user.FullName;
-                var cntry = _db.Countries.Where(f => f.Code == user.Country).FirstOrDefault();
+                var cntry = _db.Countries.Get(user.Country);
                if(cntry != null)
                {
                    um.Country = cntry.Name;

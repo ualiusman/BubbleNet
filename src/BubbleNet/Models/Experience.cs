@@ -6,17 +6,6 @@ using System.Web;
 
 namespace BubbleNet.Models
 {
-    public class Experience
-    {
-        public long ExperienceId { get; set; }
-        [Required]
-        [Display( Name="Participant")]
-        public long User { get; set; }
-        [Required]
-        [Display(Name = "Experience")]
-        public string UserExperience { get; set; }
-    }
-
     public class ExperienceViewModel
     {
         public long ExperienceId { get; set; }

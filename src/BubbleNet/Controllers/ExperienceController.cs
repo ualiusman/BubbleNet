@@ -6,20 +6,21 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using BubbleNet.Models;
+using BubbleNet.Core.Models;
+using BubbleNet.Core;
 
 namespace BubbleNet.Controllers
 {
     [Authorize]
     public class ExperienceController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IUnitOfWork db = new BubbleNet.Infrastructure.Persistence.UnitOfWork(new Infrastructure.Persistence.ApplicationDbContext());
 
         // GET: /Experience/
         public ActionResult Index()
         {
-            List<ExperienceViewModel> viewModels = new List<ExperienceViewModel>();
-            foreach (var item in db.Experiences.ToList())
+            List< BubbleNet.Models.ExperienceViewModel> viewModels = new List<BubbleNet.Models.ExperienceViewModel>();
+            foreach (var item in db.Experiences.GetAll())
             {
                 viewModels.Add(Convert(item));
             }
@@ -33,7 +34,7 @@ namespace BubbleNet.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Experience experience = db.Experiences.Find(id);
+            Experience experience = db.Experiences.Get(id.Value);
             if (experience == null)
             {
                 return HttpNotFound();
@@ -44,7 +45,7 @@ namespace BubbleNet.Controllers
         // GET: /Experience/Create
         public ActionResult Create()
         {
-            ViewBag.AllUsrs = db.Users.ToList().Select(f => new SelectListItem() { Text = f.FullName, Value = f.UserID.ToString() }).ToList();
+            ViewBag.AllUsrs = db.Users.GetUserList().Select(f => new SelectListItem() { Text = f.Value, Value = f.Key }).ToList();
             return View();
         }
 
@@ -58,7 +59,7 @@ namespace BubbleNet.Controllers
             if (ModelState.IsValid)
             {
                 db.Experiences.Add(experience);
-                db.SaveChanges();
+                db.Complete();
                 return RedirectToAction("Index");
             }
 
@@ -72,12 +73,12 @@ namespace BubbleNet.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Experience experience = db.Experiences.Find(id);
+            Experience experience = db.Experiences.Get(id.Value);
             if (experience == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.AllUsrs = db.Users.ToList().Select(f => new SelectListItem() { Text = f.FullName, Value = f.UserID.ToString(), Selected = f.UserID == experience.User }).ToList();
+            ViewBag.AllUsrs = db.Users.GetUserList().Select(f => new SelectListItem() { Text = f.Value, Value = f.Key, Selected = f.Key == experience.User.ToString() }).ToList();
             return View(experience);
         }
 
@@ -90,8 +91,13 @@ namespace BubbleNet.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(experience).State = EntityState.Modified;
-                db.SaveChanges();
+                var e = db.Experiences.Get(experience.ExperienceId);
+                if(e != null)
+                {
+                    e.User = experience.User;
+                    e.UserExperience = experience.UserExperience;
+                    db.Complete();
+                }
                 return RedirectToAction("Index");
             }
             return View(experience);
@@ -104,7 +110,7 @@ namespace BubbleNet.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Experience experience = db.Experiences.Find(id);
+            Experience experience = db.Experiences.Get(id.Value);
             if (experience == null)
             {
                 return HttpNotFound();
@@ -117,9 +123,9 @@ namespace BubbleNet.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Experience experience = db.Experiences.Find(id);
+            Experience experience = db.Experiences.Get(id);
             db.Experiences.Remove(experience);
-            db.SaveChanges();
+            db.Complete();
             return RedirectToAction("Index");
         }
 
@@ -135,12 +141,12 @@ namespace BubbleNet.Controllers
         }
 
         #region private Methods
-        private ExperienceViewModel Convert( Experience model)
+        private BubbleNet.Models.ExperienceViewModel Convert( Experience model)
         {
-            ExperienceViewModel viewModel = new ExperienceViewModel();
+            BubbleNet.Models.ExperienceViewModel viewModel = new BubbleNet.Models.ExperienceViewModel();
             viewModel.UserExperience = model.UserExperience;
             viewModel.ExperienceId = model.ExperienceId;
-            viewModel.FullName = db.Users.Where(f => f.UserID == model.User).Single().FullName;
+            viewModel.FullName = BubbleNet.Models.AppCommon.GetUser(model.User);
             return viewModel;
         }
         #endregion

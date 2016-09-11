@@ -6,7 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using BubbleNet.Models;
+using BubbleNet.Core.Models;
+using BubbleNet.Core;
 using BubbleNet;
 
 namespace BubbleNet.Controllers
@@ -14,12 +15,12 @@ namespace BubbleNet.Controllers
     [Authorize]
     public class FeatureController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IUnitOfWork db = new BubbleNet.Infrastructure.Persistence.UnitOfWork(new Infrastructure.Persistence.ApplicationDbContext());
 
         // GET: /Feature/
         public ActionResult Index()
         {
-            return View(db.Features.ToList());
+            return View(db.Features.GetAll());
         }
 
         // GET: /Feature/Details/5
@@ -29,7 +30,7 @@ namespace BubbleNet.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Feature feature = db.Features.Find(id);
+            Feature feature = db.Features.Get(id.Value);
             if (feature == null)
             {
                 return HttpNotFound();
@@ -41,7 +42,7 @@ namespace BubbleNet.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.AllProjects = db.Projects.ToList().Select(f => new SelectListItem() { Text = f.ProjectName, Value = f.ProjectId.ToString() }).ToList();
+            ViewBag.AllProjects = db.Projects.GetProjectList().Select(f => new SelectListItem() { Text = f.Value, Value = f.Key }).ToList();
             List<SelectListItem> relationships = new List<SelectListItem>();
             relationships.Add(new SelectListItem() { Text = "", Value = "" });
             relationships.Add(new SelectListItem() { Text = "Mandatory", Value = "Mandatory" });
@@ -62,7 +63,7 @@ namespace BubbleNet.Controllers
             if (ModelState.IsValid)
             {
                 db.Features.Add(feature);
-                db.SaveChanges();
+                db.Complete();
                 return RedirectToAction("Index");
             }
 
@@ -76,12 +77,12 @@ namespace BubbleNet.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Feature feature = db.Features.Find(id);
+            Feature feature = db.Features.Get(id.Value);
             if (feature == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.AllProjects = db.Projects.ToList().Select(f => new SelectListItem() { Text = f.ProjectName, Value = f.ProjectId.ToString(), Selected = f.ProjectId == feature.ProjectId }).ToList();
+            ViewBag.AllProjects = db.Projects.GetProjectList().Select(f => new SelectListItem() { Text = f.Value, Value = f.Key, Selected = f.Key == feature.ProjectId.ToString() }).ToList();
             List<SelectListItem> relationships = new List<SelectListItem>();
             relationships.Add(new SelectListItem() { Text = "", Value = "" });
             relationships.Add(new SelectListItem() { Text = "Mandatory", Value = "Mandatory", Selected = "Mandatory" == feature.Relationship });
@@ -101,8 +102,15 @@ namespace BubbleNet.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(feature).State = EntityState.Modified;
-                db.SaveChanges();
+                var f = db.Features.Get(feature.FeatureId);
+                if (f != null)
+                {
+                    f.ProjectId = feature.ProjectId;
+                    f.Name = feature.Name;
+                    f.Discription = feature.Discription;
+                    f.Relationship = feature.Relationship;
+                    db.Complete();
+                }
                 return RedirectToAction("Index");
             }
             return View(feature);
@@ -115,7 +123,7 @@ namespace BubbleNet.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Feature feature = db.Features.Find(id);
+            Feature feature = db.Features.Get(id.Value);
             if (feature == null)
             {
                 return HttpNotFound();
@@ -128,16 +136,16 @@ namespace BubbleNet.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Feature feature = db.Features.Find(id);
+            Feature feature = db.Features.Get(id);
             db.Features.Remove(feature);
-            db.SaveChanges();
+            db.Complete();
             return RedirectToAction("Index");
         }
 
         public ActionResult DistributeFeatures()
         {
-            ViewBag.AllUsrs = db.Users.ToList().Select(f => new SelectListItem() { Text = f.FullName, Value = f.UserID.ToString() }).ToList();
-            ViewBag.AllFeaturs = db.Features.ToList().Select(f => new SelectListItem() { Text = f.Name + " (" + f.Project.ProjectName + ")", Value = f.FeatureId.ToString() }).ToList();
+            ViewBag.AllUsrs = db.Users.GetUserList().Select(f => new SelectListItem() { Text = f.Value, Value = f.Key }).ToList();
+            ViewBag.AllFeaturs = db.Features.GetAll().Select(f => new SelectListItem() { Text = f.Name + " (" + f.Project.ProjectName + ")", Value = f.FeatureId.ToString() }).ToList();
             return View();
         }
 
@@ -147,10 +155,11 @@ namespace BubbleNet.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (!(db.FeatureUsers.Where(f => f.FeatureId == featureUser.FeatureId && f.UserId == featureUser.UserId).Count() > 0))
+                var f = db.Features.Get(featureUser.FeatureId);
+                if (!(f.FeatureUsers.Count() > 0))
                 {
                     db.FeatureUsers.Add(featureUser);
-                    db.SaveChanges();
+                    db.Complete();
                 }
                 return RedirectToAction("Index");
             }
@@ -160,16 +169,16 @@ namespace BubbleNet.Controllers
 
         public ActionResult FeaturesDistributionList()
         {
-           return View(db.FeatureUsers.ToList());
+           return View(db.FeatureUsers.GetAll());
         }
 
         public ActionResult DeleteDistribution(long id)
         {
-            FeatureUser featureUser = db.FeatureUsers.Find(id);
+            FeatureUser featureUser = db.FeatureUsers.Get(id);
             if(featureUser != null)
             {
                 db.FeatureUsers.Remove(featureUser);
-                db.SaveChanges();
+                db.Complete();
             
             }
             return RedirectToAction("FeaturesDistributionList");

@@ -1,5 +1,5 @@
-﻿@model IEnumerable<BubbleNet.Models.FeatureUser>
-@using BubbleNet.Models;
+﻿@model IEnumerable<BubbleNet.Core.Models.FeatureUser>
+@using BubbleNet.Core.Models;
 @{
     ViewBag.Title = "Features Distribution List";
 }
@@ -26,7 +26,7 @@
             @Html.DisplayFor(modelItem => item.Feature.Name)
         </td>
         <td>
-            @AppCommon.GetUser(item.UserId)
+            @BubbleNet.Models.AppCommon.GetUser(item.UserId)
         </td>
         <td>
             @Html.ActionLink("Delete", "DeleteDistribution", new { id = item.FeatureUserId }, new { @style = "color:red;" })

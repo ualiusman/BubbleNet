@@ -6,19 +6,20 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using BubbleNet.Models;
+using BubbleNet.Core.Models;
+using BubbleNet.Core;
 
 namespace BubbleNet.Controllers
 {
     [Authorize]
     public class PracticeController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IUnitOfWork db = new BubbleNet.Infrastructure.Persistence.UnitOfWork(new Infrastructure.Persistence.ApplicationDbContext());
 
         // GET: /Practice/
         public ActionResult Index()
         {
-            return View(db.Practices.ToList());
+            return View(db.Practices.GetAll());
         }
 
         // GET: /Practice/Details/5
@@ -28,7 +29,7 @@ namespace BubbleNet.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Practice practice = db.Practices.Find(id);
+            Practice practice = db.Practices.Get(id.Value);
             if (practice == null)
             {
                 return HttpNotFound();
@@ -52,7 +53,7 @@ namespace BubbleNet.Controllers
             if (ModelState.IsValid)
             {
                 db.Practices.Add(practice);
-                db.SaveChanges();
+                db.Complete();
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +67,7 @@ namespace BubbleNet.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Practice practice = db.Practices.Find(id);
+            Practice practice = db.Practices.Get(id.Value);
             if (practice == null)
             {
                 return HttpNotFound();
@@ -83,8 +84,15 @@ namespace BubbleNet.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(practice).State = EntityState.Modified;
-                db.SaveChanges();
+                var p = db.Practices.Get(practice.PracticeId);
+                if( p != null)
+                {
+                    p.Name = practice.Name;
+                    p.Team = practice.Team;
+                    p.Description = practice.Description;
+
+                    db.Complete();
+                }
                 return RedirectToAction("Index");
             }
             return View(practice);
@@ -97,7 +105,7 @@ namespace BubbleNet.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Practice practice = db.Practices.Find(id);
+            Practice practice = db.Practices.Get(id.Value);
             if (practice == null)
             {
                 return HttpNotFound();
@@ -110,16 +118,16 @@ namespace BubbleNet.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Practice practice = db.Practices.Find(id);
+            Practice practice = db.Practices.Get(id);
             db.Practices.Remove(practice);
-            db.SaveChanges();
+            db.Complete();
             return RedirectToAction("Index");
         }
 
         public ActionResult AssignParticipantToPractice()
         {
-            ViewBag.AllUsrs = db.Users.ToList().Select(f => new SelectListItem() { Text = f.FullName, Value = f.UserID.ToString() }).ToList();
-            ViewBag.AllPractices = db.Practices.ToList().Select(f => new SelectListItem() { Text = f.Name, Value = f.PracticeId.ToString() }).ToList();
+            ViewBag.AllUsrs = db.Users.GetUserList().Select(f => new SelectListItem() { Text = f.Value, Value = f.Key }).ToList();
+            ViewBag.AllPractices = db.Practices.GetPracticeList().Select(f => new SelectListItem() { Text = f.Value, Value = f.Key }).ToList();
             return View();
         }
 
@@ -129,10 +137,11 @@ namespace BubbleNet.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (!(db.PracticeUsers.Where(f => f.PracticeId == practiceUser.PracticeId && f.UserId == practiceUser.UserId).Count() > 0))
+                var p = db.Practices.Get(practiceUser.PracticeId);
+                if (!(p.PracticeUsers.Count() > 0))
                 {
-                    db.PracticeUsers.Add(practiceUser);
-                    db.SaveChanges();
+                    p.PracticeUsers.Add(practiceUser);
+                    db.Complete();
                 }
                 return RedirectToAction("Index");
             }
@@ -141,16 +150,16 @@ namespace BubbleNet.Controllers
 
         public ActionResult PracticeParticipantList()
         {
-            return View(db.PracticeUsers.ToList());
+            return View(db.PracticeUsers.GetAll());
         }
 
         public ActionResult DeletePracticeParticipant(long id)
         {
-            PracticeUser practiceUser = db.PracticeUsers.Find(id);
+            PracticeUser practiceUser = db.PracticeUsers.Get(id);
             if (practiceUser != null)
             {
                 db.PracticeUsers.Remove(practiceUser);
-                db.SaveChanges();
+                db.Complete();
 
             }
             return RedirectToAction("PracticeParticipantList");
