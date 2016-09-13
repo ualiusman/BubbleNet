@@ -20,6 +20,9 @@ namespace BubbleNet
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             Database.SetInitializer(new ApplicationDbInitializer());
+
+            BubbleNet.Infrastructure.Email.EmailServiceFactory.InitiliazeEmailService(new BubbleNet.Infrastructure.Email.SMTPService());
+            BubbleNet.Infrastructure.Logging.LoggingFactory.InitilizeLogger(new BubbleNet.Infrastructure.Logging.NLogAdapter());
         }
     }
 }

@@ -52,6 +52,8 @@ namespace BubbleNet.Controllers
                 var user = await UserManager.FindAsync(model.UserName, model.Password);
                 if (user != null)
                 {
+                    BubbleNet.Infrastructure.Email.EmailServiceFactory.GetEmailService().SendMail("test@mail.com", "test1@mail.com", "Login-Log", "A new User is logged in.");
+                    BubbleNet.Infrastructure.Logging.LoggingFactory.GetLogger().Log("Test and Test");
                     await SignInAsync(user, model.RememberMe);
                     return RedirectToLocal(returnUrl);
                 }
@@ -60,7 +62,7 @@ namespace BubbleNet.Controllers
                     ModelState.AddModelError("", "Invalid username or password.");
                 }
             }
-
+            
             // If we got this far, something failed, redisplay form
             return View(model);
         }
@@ -94,7 +96,7 @@ namespace BubbleNet.Controllers
                     AddErrors(result);
                 }
             }
-
+            
             // If we got this far, something failed, redisplay form
             return View(model);
         }

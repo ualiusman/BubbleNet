@@ -13,6 +13,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleNet.Core", "BubbleNet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleNet.Infrastructure.Persistence", "BubbleNet.Infrastructure.Persistence\BubbleNet.Infrastructure.Persistence.csproj", "{38D3B4E6-53D4-416A-8707-60FFC606638B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleNet.Infrastructure", "BubbleNet.Infrastructure\BubbleNet.Infrastructure.csproj", "{BBD556F4-81AA-460B-B8BB-B179F41ED796}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{9FD583F4-F3E6-48A9-B735-504E4ACB8C0E}"
+	ProjectSection(SolutionItems) = preProject
+		BubbleNet\NLog.config = BubbleNet\NLog.config
+		BubbleNet\NLog.xsd = BubbleNet\NLog.xsd
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +39,10 @@ Global
 		{38D3B4E6-53D4-416A-8707-60FFC606638B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38D3B4E6-53D4-416A-8707-60FFC606638B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38D3B4E6-53D4-416A-8707-60FFC606638B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBD556F4-81AA-460B-B8BB-B179F41ED796}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBD556F4-81AA-460B-B8BB-B179F41ED796}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBD556F4-81AA-460B-B8BB-B179F41ED796}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBD556F4-81AA-460B-B8BB-B179F41ED796}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -38,5 +50,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{8E54F90B-2354-4A78-940B-E01BC57628B1} = {1D7E3620-3F77-4F2D-8802-1CF88B362BA4}
 		{38D3B4E6-53D4-416A-8707-60FFC606638B} = {5E61987E-87C0-484B-A8B9-0D9BDA382C7A}
+		{BBD556F4-81AA-460B-B8BB-B179F41ED796} = {5E61987E-87C0-484B-A8B9-0D9BDA382C7A}
 	EndGlobalSection
 EndGlobal
