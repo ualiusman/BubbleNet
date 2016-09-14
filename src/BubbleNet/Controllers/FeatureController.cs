@@ -15,7 +15,12 @@ namespace BubbleNet.Controllers
     [Authorize]
     public class FeatureController : Controller
     {
-        private IUnitOfWork db = new BubbleNet.Infrastructure.Persistence.UnitOfWork(new Infrastructure.Persistence.ApplicationDbContext());
+        private IUnitOfWork db; 
+
+        public FeatureController(IUnitOfWork uof)
+        {
+            db = uof;
+        }
 
         // GET: /Feature/
         public ActionResult Index()

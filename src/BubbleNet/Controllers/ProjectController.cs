@@ -14,8 +14,13 @@ namespace BubbleNet.Controllers
     [Authorize]
     public class ProjectController : Controller
     {
-        private IUnitOfWork db = new BubbleNet.Infrastructure.Persistence.UnitOfWork(new Infrastructure.Persistence.ApplicationDbContext());
+        private IUnitOfWork db;
 
+
+        public ProjectController(IUnitOfWork uof)
+        {
+            db = uof;
+        }
         // GET: /Project/
         public ActionResult Index()
         {

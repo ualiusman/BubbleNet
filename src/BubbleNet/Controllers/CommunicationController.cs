@@ -14,7 +14,12 @@ namespace BubbleNet.Controllers
     [Authorize]
     public class CommunicationController : Controller
     {
-        private IUnitOfWork db = new BubbleNet.Infrastructure.Persistence.UnitOfWork(new Infrastructure.Persistence.ApplicationDbContext());
+        private IUnitOfWork db;
+
+        public CommunicationController(IUnitOfWork uof)
+        {
+            db = uof;
+        }
 
         // GET: /Communication/
         public ActionResult Index()

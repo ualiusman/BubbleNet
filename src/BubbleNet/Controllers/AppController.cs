@@ -5,12 +5,18 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PagedList;
+using BubbleNet.Core;
 
 namespace BubbleNet.Controllers
 {
     [Authorize]
     public class AppController : Controller
     {
+        public IUnitOfWork _db;
+        public AppController(IUnitOfWork uof)
+        {
+            _db = uof;
+        }
         //
         // GET: /App/
         public ActionResult ROI()
@@ -20,7 +26,7 @@ namespace BubbleNet.Controllers
 
         public ActionResult Poster(int? page)
         {
-            var _db = new BubbleNet.Infrastructure.Persistence.UnitOfWork(new Infrastructure.Persistence.ApplicationDbContext());
+           
 
             List<UserViewModel> userModel = new List<UserViewModel>();
             foreach (var user in _db.Users.GetAll())

@@ -14,7 +14,12 @@ namespace BubbleNet.Controllers
     [Authorize]
     public class PracticeController : Controller
     {
-        private IUnitOfWork db = new BubbleNet.Infrastructure.Persistence.UnitOfWork(new Infrastructure.Persistence.ApplicationDbContext());
+        private IUnitOfWork db;
+
+        public PracticeController(IUnitOfWork uof)
+        {
+            db = uof;
+        }
 
         // GET: /Practice/
         public ActionResult Index()

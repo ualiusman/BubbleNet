@@ -13,9 +13,9 @@ namespace BubbleNet.Infrastructure.Persistence
     {
         private readonly ApplicationDbContext _context;
 
-        public UnitOfWork(ApplicationDbContext context)
+        public UnitOfWork()
         {
-            _context = context;
+            _context = new ApplicationDbContext();
             Projects = new ProjectRepository(_context);
             Practices = new PracticeRepository(_context);
             Users = new UserRepository(_context);

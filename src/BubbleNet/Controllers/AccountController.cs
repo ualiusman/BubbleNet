@@ -13,22 +13,24 @@ using System.Data.Entity;
 using System.IO;
 using BubbleNet.Core.Models;
 using BubbleNet.Infrastructure.Persistence;
+using BubbleNet.Core;
 
 namespace BubbleNet.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
-        public AccountController()
+        private IUnitOfWork uof;
+        public AccountController(IUnitOfWork u)
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
+            uof = u;
         }
 
         public AccountController(UserManager<ApplicationUser> userManager)
         {
             UserManager = userManager;
         }
-
         public UserManager<ApplicationUser> UserManager { get; private set; }
 
         //
@@ -138,7 +140,6 @@ namespace BubbleNet.Controllers
             var user = _db.Users.First(u => u.UserName == username);
             var userModel = new UserViewModel(user);
             var tuple = new Tuple<UserViewModel, ManageUserViewModel>(userModel, new ManageUserViewModel());
-            var uof = new BubbleNet.Infrastructure.Persistence.UnitOfWork(new BubbleNet.Infrastructure.Persistence.ApplicationDbContext());
             var st = uof.Countries.GetCountryList().Select(f => new SelectListItem() { Text = f.Value, Value = f.Key, Selected = f.Key == user.Country }).ToList();
             if(string.IsNullOrEmpty(user.Country))
                 st.Add(new SelectListItem() { Text = "Select", Value = "", Selected=true });

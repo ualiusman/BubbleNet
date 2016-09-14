@@ -1,4 +1,7 @@
 ﻿using BubbleNet.App_Start;
+using BubbleNet.Infrastructure.DI;
+using Ninject;
+using Ninject.Web.Common;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -10,10 +13,12 @@ using System.Web.Routing;
 
 namespace BubbleNet
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
-        protected void Application_Start()
+        protected  void Application_Start() 
         {
+
+            //base.OnApplicationStarted();
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -23,6 +28,7 @@ namespace BubbleNet
 
             BubbleNet.Infrastructure.Email.EmailServiceFactory.InitiliazeEmailService(new BubbleNet.Infrastructure.Email.SMTPService());
             BubbleNet.Infrastructure.Logging.LoggingFactory.InitilizeLogger(new BubbleNet.Infrastructure.Logging.NLogAdapter());
+            //App_Start.NinjectWebCommon.Start();   
         }
     }
 }

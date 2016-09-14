@@ -14,8 +14,12 @@ namespace BubbleNet.Controllers
     [Authorize]
     public class ExperienceController : Controller
     {
-        private IUnitOfWork db = new BubbleNet.Infrastructure.Persistence.UnitOfWork(new Infrastructure.Persistence.ApplicationDbContext());
+        private IUnitOfWork db;
 
+        public ExperienceController(IUnitOfWork uof)
+        {
+            db = uof;
+        }
         // GET: /Experience/
         public ActionResult Index()
         {

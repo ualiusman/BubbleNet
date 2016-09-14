@@ -26,7 +26,7 @@ namespace BubbleNet.App_Start
 
         private static void CreateCountries(ApplicationDbContext context)
         {
-            var uof = new UnitOfWork(context);
+            var uof = new UnitOfWork();
             uof.Countries.Add(new Country() { Code = "AFG", Name = "Afghanistan", TimeZone = "UTC+04:30", UtcOffset = 4.50f });
             uof.Countries.Add(new Country() { Code = "ALB", Name = "Albania", TimeZone = "UTC+01:00 (CET)", UtcOffset = 1.0f });
             uof.Countries.Add(new Country() { Code = "DZA", Name = "Algeria", TimeZone = "UTC+01:00 (CET)", UtcOffset = 1.0f });

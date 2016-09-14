@@ -11,7 +11,7 @@ namespace BubbleNet.Models
         public static string GetUser(long userId)
         {
             string name = string.Empty;
-             IUnitOfWork db = new BubbleNet.Infrastructure.Persistence.UnitOfWork(new Infrastructure.Persistence.ApplicationDbContext());
+             IUnitOfWork db = new BubbleNet.Infrastructure.Persistence.UnitOfWork();
             name = db.Users.GetUserName(userId);
             db.Dispose();
             return name;
