@@ -23,6 +23,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{9FD5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleNet.Infrastructure.DI", "BubbleNet.Infrastructure.DI\BubbleNet.Infrastructure.DI.csproj", "{80BDCF13-5FF6-481B-9490-9EB9255DADB9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2B57A212-C228-43AA-9136-8530E036F135}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleNet.Test.Web", "BubbleNet.Test.Web\BubbleNet.Test.Web.csproj", "{CF57E89B-0B8A-4322-B640-F271ABCBC11A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,10 @@ Global
 		{80BDCF13-5FF6-481B-9490-9EB9255DADB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80BDCF13-5FF6-481B-9490-9EB9255DADB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80BDCF13-5FF6-481B-9490-9EB9255DADB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF57E89B-0B8A-4322-B640-F271ABCBC11A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF57E89B-0B8A-4322-B640-F271ABCBC11A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF57E89B-0B8A-4322-B640-F271ABCBC11A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF57E89B-0B8A-4322-B640-F271ABCBC11A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,5 +66,6 @@ Global
 		{38D3B4E6-53D4-416A-8707-60FFC606638B} = {5E61987E-87C0-484B-A8B9-0D9BDA382C7A}
 		{BBD556F4-81AA-460B-B8BB-B179F41ED796} = {5E61987E-87C0-484B-A8B9-0D9BDA382C7A}
 		{80BDCF13-5FF6-481B-9490-9EB9255DADB9} = {5E61987E-87C0-484B-A8B9-0D9BDA382C7A}
+		{CF57E89B-0B8A-4322-B640-F271ABCBC11A} = {2B57A212-C228-43AA-9136-8530E036F135}
 	EndGlobalSection
 EndGlobal

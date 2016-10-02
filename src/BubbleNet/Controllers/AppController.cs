@@ -21,7 +21,7 @@ namespace BubbleNet.Controllers
         // GET: /App/
         public ActionResult ROI()
         {
-            return View();
+            return View("ROI");
         }
 
         public ActionResult Poster(int? page)
@@ -63,7 +63,7 @@ namespace BubbleNet.Controllers
             int pageSize = 3;
             int pageNumber = (page ?? 1);
             
-            return View(userModel.ToPagedList(pageNumber,pageSize));
+            return View("Poster",userModel.ToPagedList(pageNumber,pageSize));
         }
 	}
 }

@@ -25,7 +25,7 @@ namespace BubbleNet.Controllers
         public ActionResult Index()
         {
             //return View(db.Projects.ToList());
-            return View(db.Projects.GetAll());
+            return View("Index",db.Projects.GetAll());
         }
 
         // GET: /Project/Details/5
@@ -40,13 +40,13 @@ namespace BubbleNet.Controllers
             {
                 return HttpNotFound();
             }
-            return View(project);
+            return View("Details",project);
         }
 
         // GET: /Project/Create
         public ActionResult Create()
         {
-            return View();
+            return View("Create");
         }
 
         // POST: /Project/Create
@@ -63,7 +63,7 @@ namespace BubbleNet.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(project);
+            return View("Create",project);
         }
 
         // GET: /Project/Edit/5
@@ -78,7 +78,7 @@ namespace BubbleNet.Controllers
             {
                 return HttpNotFound();
             }
-            return View(project);
+            return View("Edit",project);
         }
 
         // POST: /Project/Edit/5
@@ -99,7 +99,7 @@ namespace BubbleNet.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return View(project);
+            return View("Edit",project);
         }
 
         // GET: /Project/Delete/5
@@ -114,7 +114,7 @@ namespace BubbleNet.Controllers
             {
                 return HttpNotFound();
             }
-            return View(project);
+            return View("Delete",project);
         }
 
         // POST: /Project/Delete/5
