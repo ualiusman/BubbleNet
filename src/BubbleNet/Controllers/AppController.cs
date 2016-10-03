@@ -12,6 +12,7 @@ namespace BubbleNet.Controllers
     [Authorize]
     public class AppController : Controller
     {
+        //Test
         public IUnitOfWork _db;
         public AppController(IUnitOfWork uof)
         {
